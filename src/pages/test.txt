@@ -1,0 +1,311 @@
+{/* Hero Section */}
+          <motion.section
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8 md:p-10 rounded-xl shadow-xl w-full mb-8 overflow-hidden relative mt-4"
+          >
+            <motion.div
+              className="absolute top-0 right-0 w-64 h-64 bg-blue-400 rounded-full opacity-20 -mr-20 -mt-20"
+              animate={{
+                scale: [1, 1.2, 1],
+                rotate: [0, 15, 0],
+              }}
+              transition={{
+                duration: 8,
+                repeat: Infinity,
+                repeatType: "reverse",
+              }}
+            />
+            <motion.div
+              className="absolute bottom-0 left-0 w-48 h-48 bg-indigo-300 rounded-full opacity-20 -ml-10 -mb-10"
+              animate={{
+                scale: [1, 1.3, 1],
+                rotate: [0, -10, 0],
+              }}
+              transition={{
+                duration: 6,
+                repeat: Infinity,
+                repeatType: "reverse",
+                delay: 1,
+              }}
+            />
+
+            <div className="max-w-6xl mx-auto text-center">
+              <motion.h1 variants={itemVariants} className="text-4xl font-bold">
+                Make a Difference Today!
+              </motion.h1>
+              <motion.p
+                variants={itemVariants}
+                className="mt-3 text-lg max-w-3xl mx-auto"
+              >
+                Your donations help NGOs support those in need. Join us in
+                creating positive change and building a better future together.
+              </motion.p>
+
+              <motion.div variants={itemVariants} className="mt-8">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-white text-indigo-700 font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition duration-300"
+                  onClick={() => setShowForm(true)}
+                >
+                  Donate Now <Heart className="inline ml-2" size={18} />
+                </motion.button>
+              </motion.div>
+
+              <motion.div
+                variants={itemVariants}
+                className="mt-6 flex justify-center space-x-4"
+              >
+                <span className="bg-blue-500 bg-opacity-40 rounded-full py-2 px-4 text-sm font-medium">
+                  20K+ Donors
+                </span>
+                <span className="bg-blue-500 bg-opacity-40 rounded-full py-2 px-4 text-sm font-medium">
+                  100+ NGOs
+                </span>
+                <span className="bg-blue-500 bg-opacity-40 rounded-full py-2 px-4 text-sm font-medium">
+                  50+ Countries
+                </span>
+              </motion.div>
+            </div>
+          </motion.section>
+
+          {/* How It Works Section */}
+          <motion.section
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={containerVariants}
+            className="bg-white rounded-xl shadow-lg p-8 w-full mb-8"
+          >
+            <div className="max-w-6xl mx-auto">
+              <motion.h1
+                variants={itemVariants}
+                className="text-center text-3xl font-bold text-gray-800 mb-10"
+              >
+                How It Works
+              </motion.h1>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-blue-50 rounded-xl p-6 text-center transition-all hover:shadow-lg"
+                >
+                  <div className="mb-4 bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                    <DollarSign className="text-blue-600" size={24} />
+                  </div>
+                  <img
+                    className="h-48 w-full rounded-lg object-cover mb-4"
+                    src={Banner1}
+                    alt="Food Donation"
+                  />
+                  <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                    Food is Donated
+                  </h2>
+                  <p className="text-gray-600">
+                    Restaurants, cafeterias, hotels, and grocery stores post
+                    excess food in under a minute on Meal Link.
+                  </p>
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-blue-50 rounded-xl p-6 text-center transition-all hover:shadow-lg"
+                >
+                  <div className="mb-4 bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                    <TrendingUp className="text-blue-600" size={24} />
+                  </div>
+                  <img
+                    className="h-48 w-full rounded-lg object-cover mb-4"
+                    src={Banner2}
+                    alt="Food Security"
+                  />
+                  <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                    Food is Secured
+                  </h2>
+                  <p className="text-gray-600">
+                    Pre-vetted charities are immediately notified about food
+                    donations and can claim any donations they can use.
+                  </p>
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-blue-50 rounded-xl p-6 text-center transition-all hover:shadow-lg"
+                >
+                  <div className="mb-4 bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto">
+                    <Clock className="text-blue-600" size={24} />
+                  </div>
+                  <img
+                    className="h-48 w-full rounded-lg object-cover mb-4"
+                    src={Banner3}
+                    alt="Food Pickup"
+                  />
+                  <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                    Food Is Picked Up
+                  </h2>
+                  <p className="text-gray-600">
+                    The charity, or a network of volunteers, picks up the food
+                    and serves it to hungry people.
+                  </p>
+                </motion.div>
+              </div>
+            </div>
+          </motion.section>
+
+          {/* Features Section */}
+          <motion.section
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={containerVariants}
+            className="bg-white rounded-xl shadow-lg p-8 w-full mb-8"
+          >
+            <div className="max-w-6xl mx-auto">
+              <motion.p
+                variants={itemVariants}
+                className="font-medium text-blue-500 text-center uppercase mb-2"
+              >
+                Our Features
+              </motion.p>
+              <motion.h1
+                variants={itemVariants}
+                className="font-bold text-gray-900 text-3xl text-center mb-10"
+              >
+                We believe we can save more lives with you
+              </motion.h1>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ y: -5 }}
+                  className="bg-gradient-to-b from-blue-50 to-white rounded-xl p-6 text-center shadow transition-all"
+                >
+                  <div className="flex justify-center mb-6">
+                    <div className="w-16 h-16 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full">
+                      <Globe size={24} />
+                    </div>
+                  </div>
+                  <h4 className="font-semibold text-xl text-gray-900 mb-4">
+                    Transparent
+                  </h4>
+                  <p className="text-gray-600 mb-6">
+                    Donations and distributions can be seen transparently
+                    through our real-time dashboard.
+                  </p>
+                  <motion.a
+                    href="#"
+                    whileHover={{ scale: 1.05 }}
+                    className="inline-flex items-center gap-2 px-4 py-2 font-medium text-blue-600 rounded-lg hover:bg-blue-50"
+                  >
+                    Learn more →
+                  </motion.a>
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ y: -5 }}
+                  className="bg-gradient-to-b from-blue-50 to-white rounded-xl p-6 text-center shadow transition-all"
+                >
+                  <div className="flex justify-center mb-6">
+                    <div className="w-16 h-16 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full">
+                      <TrendingUp size={24} />
+                    </div>
+                  </div>
+                  <h4 className="font-semibold text-xl text-gray-900 mb-4">
+                    Quick Fundraise
+                  </h4>
+                  <p className="text-gray-600 mb-6">
+                    The simplest and quickest way to make a donation and see
+                    your impact immediately.
+                  </p>
+                  <motion.a
+                    href="#"
+                    whileHover={{ scale: 1.05 }}
+                    className="inline-flex items-center gap-2 px-4 py-2 font-medium text-blue-600 rounded-lg hover:bg-blue-50"
+                  >
+                    Learn more →
+                  </motion.a>
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ y: -5 }}
+                  className="bg-gradient-to-b from-blue-50 to-white rounded-xl p-6 text-center shadow transition-all"
+                >
+                  <div className="flex justify-center mb-6">
+                    <div className="w-16 h-16 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full">
+                      <Clock size={24} />
+                    </div>
+                  </div>
+                  <h4 className="font-semibold text-xl text-gray-900 mb-4">
+                    Real Time
+                  </h4>
+                  <p className="text-gray-600 mb-6">
+                    Reports related to donations and distribution are updated in
+                    real-time for full transparency.
+                  </p>
+                  <motion.a
+                    href="#"
+                    whileHover={{ scale: 1.05 }}
+                    className="inline-flex items-center gap-2 px-4 py-2 font-medium text-blue-600 rounded-lg hover:bg-blue-50"
+                  >
+                    Learn more →
+                  </motion.a>
+                </motion.div>
+              </div>
+            </div>
+          </motion.section>
+
+          {/* Impact Stats */}
+          <motion.section
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={containerVariants}
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl shadow-lg p-8 w-full mb-8 text-white"
+          >
+            <div className="max-w-6xl mx-auto">
+              <motion.h2
+                variants={itemVariants}
+                className="text-2xl font-bold text-center mb-8"
+              >
+                Our Impact So Far
+              </motion.h2>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-white bg-opacity-20 p-4 rounded-lg"
+                >
+                  <h3 className="text-3xl font-bold">12,500+</h3>
+                  <p>Meals Delivered</p>
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-white bg-opacity-20 p-4 rounded-lg"
+                >
+                  <h3 className="text-3xl font-bold">$250K+</h3>
+                  <p>Funds Raised</p>
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-white bg-opacity-20 p-4 rounded-lg"
+                >
+                  <h3 className="text-3xl font-bold">45+</h3>
+                  <p>Partner NGOs</p>
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-white bg-opacity-20 p-4 rounded-lg"
+                >
+                  <h3 className="text-3xl font-bold">20+</h3>
+                  <p>Cities Served</p>
+                </motion.div>
+              </div>
+            </div>
+          </motion.section>

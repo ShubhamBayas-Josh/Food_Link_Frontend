@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
-
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,9 +9,9 @@ export default function Navbar() {
   return (
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <a href="#" className="text-white text-xl font-bold">
-          Brand
-        </a>
+        <Link to="/" className="text-white text-xl font-bold">
+          Meal Link
+        </Link>
 
         {/* Mobile Menu Toggle */}
         <button
@@ -24,14 +24,14 @@ export default function Navbar() {
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6 text-white">
           <li>
-            <a href="#" className="hover:text-gray-300">
+            <Link to="/" className="hover:text-gray-300">
               Home
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" className="hover:text-gray-300">
+            <Link to="/about" className="hover:text-gray-300">
               About
-            </a>
+            </Link>
           </li>
 
           {/* Dropdown */}
@@ -45,23 +45,23 @@ export default function Navbar() {
             {isDropdownOpen && (
               <ul className="absolute left-0 mt-2 w-48 bg-white text-black shadow-lg rounded-md overflow-hidden">
                 <li>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-200">
+                  <Link to="/login" className="block px-4 py-2 hover:bg-gray-200">
                     Login
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-200">
+                  <Link to="/signup" className="block px-4 py-2 hover:bg-gray-200">
                     Sign Up
-                  </a>
+                  </Link>
                 </li>
               </ul>
             )}
           </li>
 
           <li>
-            <a href="#" className="hover:text-gray-300">
+            <Link to="/contact" className="hover:text-gray-300">
               Contact
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
@@ -70,14 +70,14 @@ export default function Navbar() {
       {isOpen && (
         <ul className="md:hidden bg-gray-700 text-white space-y-4 p-4 mt-2">
           <li>
-            <a href="#" className="block">
+            <Link to="/" className="block">
               Home
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#" className="block">
+            <Link to="/about" className="block">
               About
-            </a>
+            </Link>
           </li>
 
           {/* Mobile Dropdown */}
@@ -91,23 +91,23 @@ export default function Navbar() {
             {isDropdownOpen && (
               <ul className="mt-2 bg-gray-600 rounded-md overflow-hidden">
                 <li>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-500">
+                  <Link to="/login" className="block px-4 py-2 hover:bg-gray-500">
                     Login
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-500">
+                  <Link to="/signup" className="block px-4 py-2 hover:bg-gray-500">
                     Sign Up
-                  </a>
+                  </Link>
                 </li>
               </ul>
             )}
           </li>
 
           <li>
-            <a href="#" className="block">
+            <Link to="/about" className="block">
               Contact
-            </a>
+            </Link>
           </li>
         </ul>
       )}
