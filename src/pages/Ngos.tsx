@@ -137,8 +137,9 @@ const TransactionList = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
-      <div className="flex flex-1">
-        <Sidebar />
+       <div className="fixed left-0 top-0 h-screen">
+          <Sidebar />
+        </div>
         <main className="flex-1 p-6">
           <div className="max-w-7xl mx-auto">
             <header className="mb-8 text-center">
@@ -272,7 +273,7 @@ const TransactionList = () => {
           </div>
         </main>
       </div>
-    </div>
+    
   );
 };
 
