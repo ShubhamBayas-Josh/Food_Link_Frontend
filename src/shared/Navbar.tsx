@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
-import { useAuth } from "../pages/AuthContext";
+import { useAuth } from "../pages/AuthContext"; // ✅ Adjust the path correctly
 
 export default function Navbar() {
   const { user, logout } = useAuth();

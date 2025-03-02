@@ -1,10 +1,19 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useCallback,
+} from "react";
+import { jwtDecode } from "jwt-decode"; // Ensure correct import
 
 interface User {
+  user_id: number;
   email: string;
   token: string;
-  role?: string; // Optional to prevent errors
-  exp?: string;  // Expiration time (added for auto-logout)
+  role?: string;
+  exp?: number; // UNIX timestamp (seconds)
 }
 
 interface AuthContextType {
@@ -13,62 +22,86 @@ interface AuthContextType {
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(() => {
     try {
       const storedUser = localStorage.getItem("user");
-      return storedUser ? JSON.parse(storedUser) : null;
+      if (!storedUser) return null;
+
+      const parsedUser: User = JSON.parse(storedUser);
+      const currentTime = Date.now() / 1000; // Convert to seconds
+
+      if (parsedUser.exp && parsedUser.exp < currentTime) {
+        console.warn("Stored token expired. Clearing session.");
+        localStorage.removeItem("user");
+        return null;
+      }
+
+      return parsedUser;
     } catch (error) {
       console.error("Error parsing user from localStorage:", error);
       return null;
     }
   });
 
-  // Save user data to local storage when user changes
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
+  const login = useCallback((userData: User) => {
+    try {
+      if (!userData.token) {
+        console.error("⚠️ No token provided in userData");
+        return;
+      }
+  
+      const decodedToken: any = jwtDecode(userData.token);
+      if (!decodedToken.exp) {
+        console.warn("⚠️ Token has no expiration date.");
+        return;
+      }
+  
+      const updatedUser: User = {
+        ...userData,
+        exp: decodedToken.exp,
+        role: userData.role || "user",
+      };
+  
+      setUser(updatedUser);
+      localStorage.setItem("token", userData.token); // Ensure token is stored
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+    } catch (error) {
+      console.error("❌ Error decoding token:", error);
     }
-  }, [user]);
+  }, []);
+  
 
-  // ✅ Login function with default role assignment
-  const login = (userData: User) => {
-    const updatedUser = { ...userData, role: userData.role || "user" }; // Assign default role if missing
-    setUser(updatedUser);
-    localStorage.setItem("user", JSON.stringify(updatedUser));
-  };
-
-  // ✅ Logout function (clears storage & state)
-  const logout = () => {
+  // ✅ Logout function (clears session)
+  const logout = useCallback(() => {
     setUser(null);
     localStorage.removeItem("user");
-    sessionStorage.clear(); // Clear session storage
-  };
+    sessionStorage.clear();
+    console.info("User logged out successfully.");
+  }, []);
 
   // ✅ Auto-logout when token expires
   useEffect(() => {
-    if (user?.exp) {
-      const expirationTime = new Date(user.exp).getTime();
-      const currentTime = new Date().getTime();
+    if (!user?.exp) return;
 
-      if (currentTime >= expirationTime) {
+    const expirationTime = user.exp * 1000;
+    const currentTime = Date.now();
+
+    if (currentTime >= expirationTime) {
+      console.warn("Session expired, logging out...");
+      logout();
+    } else {
+      const timeout = expirationTime - currentTime;
+      const logoutTimer = setTimeout(() => {
         console.warn("Session expired, logging out...");
         logout();
-      } else {
-        const timeout = expirationTime - currentTime;
-        const logoutTimer = setTimeout(() => {
-          console.warn("Session expired, logging out...");
-          logout();
-        }, timeout);
+      }, timeout);
 
-        return () => clearTimeout(logoutTimer);
-      }
+      return () => clearTimeout(logoutTimer);
     }
-  }, [user]);
+  }, [user, logout]);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
@@ -77,7 +110,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// ✅ Custom hook for using auth context
+// ✅ Custom hook to access auth context
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
