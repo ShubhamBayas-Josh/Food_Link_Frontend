@@ -1,4 +1,3 @@
-import Sidebar from "../shared/Sidebar";
 import Navbar from "../shared/Navbar";
 
 //Images
@@ -11,60 +10,61 @@ import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <>
-      <div className="fixed w-full">
+      <div className="fixed w-full z-50">
         <Navbar />
       </div>
-      <div className="h-screen flex bg-gray-200">
-        <div className="fixed left-0 top-0 h-screen">
-          <Sidebar />
-        </div>
-        <div className="w-screen ml-20">
-          <div className="container mx-auto px-6 py-16 text-center">
-            <div className="mx-auto max-w-lg">
-              <h1 className="text-3xl font-bold text-gray-600  lg:text-4xl mt-5">
+      <div className="min-h-screen bg-gray-50">
+        <div className="w-full">
+          {/* Hero Section */}
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+            <div className="mx-auto max-w-2xl mb-12">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-6 leading-tight">
                 An innovative approach to helping people emerge from the cycle
                 of poverty.
               </h1>
-              <p className="mt-8 p-4 text-gray-500 dark:text-black-350">
+              <p className="text-xl text-gray-600 mb-8">
                 The Food for People Story
               </p>
               <Link
                 to="/Login"
-                className="mt-6 p-4 rounded-lg bg-blue-600 px-6 py-2.5 text-center text-sm font-medium capitalize leading-5 text-white hover:bg-blue-500 focus:outline-none lg:mx-0 lg:w-auto"
+                className="inline-block px-8 py-3 rounded-lg bg-blue-600 text-base font-medium text-white shadow-md hover:bg-blue-700 hover:shadow-lg transition-all duration-300 transform hover:scale-105"
               >
                 Donate Now
               </Link>
-              <p className="mt-3 p-2 text-sm text-gray-400">
+              <p className="mt-4 text-sm text-gray-500">
                 No Payments required
               </p>
             </div>
 
-            <div className="mt-10 flex justify-center">
+            <div className="relative overflow-hidden rounded-2xl shadow-2xl mx-auto max-w-5xl">
               <img
-                className="h-96 w-full rounded-xl object-cover lg:w-4/5"
+                className="w-full h-auto object-cover"
                 src={DonationBanner}
+                alt="Donation Banner"
               />
             </div>
           </div>
-          <section className="bg-white dark:bg-gray-900">
-            <div className="container mx-auto px-6 py-10">
-              <h1 className="text-center text-3xl font-bold capitalize text-gray-900 dark:text-white lg:text-4xl">
-                How It Works
-              </h1>
 
-              <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 xl:mt-12 xl:grid-cols-3 xl:gap-12">
+          {/* How It Works Section */}
+          <section className="py-20 bg-white">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-center text-4xl font-bold text-gray-900 mb-16">
+                How It Works
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
                 {/* Card 1 */}
-                <div className="group relative overflow-hidden rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                <div className="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
                   <img
-                    className="h-96 w-full object-cover rounded-lg transition-transform duration-300 group-hover:brightness-75"
+                    className="h-80 w-full object-cover transition-transform duration-500 group-hover:scale-110 group-hover:brightness-90"
                     src={Banner1}
                     alt="Food is Donated"
                   />
-                  <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent p-6">
-                    <h2 className="text-2xl font-semibold capitalize text-white">
+                  <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/40 to-transparent p-8">
+                    <h3 className="text-2xl font-bold text-white mb-2">
                       Food is Donated
-                    </h2>
-                    <p className="mt-2 text-lg uppercase tracking-wider text-yellow-400">
+                    </h3>
+                    <p className="text-lg text-yellow-400 font-medium">
                       Restaurants, cafeterias, hotels, and grocery stores post
                       excess food within minutes on Meal Link.
                     </p>
@@ -72,17 +72,17 @@ const Home = () => {
                 </div>
 
                 {/* Card 2 */}
-                <div className="group relative overflow-hidden rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                <div className="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
                   <img
-                    className="h-96 w-full object-cover rounded-lg transition-transform duration-300 group-hover:brightness-75"
+                    className="h-80 w-full object-cover transition-transform duration-500 group-hover:scale-110 group-hover:brightness-90"
                     src={Banner2}
                     alt="Food is Secured"
                   />
-                  <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent p-6">
-                    <h2 className="text-2xl font-semibold capitalize text-white">
+                  <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/40 to-transparent p-8">
+                    <h3 className="text-2xl font-bold text-white mb-2">
                       Food is Secured
-                    </h2>
-                    <p className="mt-2 text-lg uppercase tracking-wider text-green-400">
+                    </h3>
+                    <p className="text-lg text-green-400 font-medium">
                       Pre-vetted charities get notified instantly and claim
                       donations to serve the hungry.
                     </p>
@@ -90,17 +90,17 @@ const Home = () => {
                 </div>
 
                 {/* Card 3 */}
-                <div className="group relative overflow-hidden rounded-lg shadow-lg transition-transform duration-300 hover:scale-105">
+                <div className="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
                   <img
-                    className="h-96 w-full object-cover rounded-lg transition-transform duration-300 group-hover:brightness-75"
+                    className="h-80 w-full object-cover transition-transform duration-500 group-hover:scale-110 group-hover:brightness-90"
                     src={Banner3}
                     alt="Food is Picked Up"
                   />
-                  <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent p-6">
-                    <h2 className="text-2xl font-semibold capitalize text-white">
+                  <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/40 to-transparent p-8">
+                    <h3 className="text-2xl font-bold text-white mb-2">
                       Food is Picked Up
-                    </h2>
-                    <p className="mt-2 text-lg uppercase tracking-wider text-red-400">
+                    </h3>
+                    <p className="text-lg text-red-400 font-medium">
                       The charity or volunteers collect the food and distribute
                       it to those in need.
                     </p>
@@ -110,370 +110,299 @@ const Home = () => {
             </div>
           </section>
 
-          <section className="bg-white dark:bg-gray-900">
-            <div className="flex flex-col items-center py-10 bg-white dark:bg-gray-900">
-              {/* Food Facts Tag */}
-              <div className="bg-purple-600 text-white px-6 py-2 rounded-full text-sm font-semibold uppercase shadow-lg transition-transform duration-300 hover:scale-105">
-                Food Facts
+          {/* Food Facts Section */}
+          <section className="py-20 bg-gray-50">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex flex-col items-center mb-16">
+                <span className="bg-purple-600 text-white px-6 py-2 rounded-full text-sm font-semibold uppercase shadow-lg mb-6 transform transition-transform duration-300 hover:scale-105">
+                  Food Facts
+                </span>
+                <h2 className="text-4xl font-bold text-center text-gray-900 mb-6">
+                  A Solvable Problem
+                </h2>
+                <p className="text-center text-gray-600 max-w-3xl text-lg">
+                  Service organizations want access to excess food, but there are
+                  barriers — locating the excess food, establishing their
+                  credentials, and efficiently deploying resources to transport
+                  food.{" "}
+                  <span className="text-green-500 font-semibold">
+                    Waste No Food
+                  </span>{" "}
+                  breaks down these barriers.
+                </p>
               </div>
 
-              {/* Heading */}
-              <h2 className="text-4xl font-bold text-center mt-4 text-gray-900 dark:text-white">
-                A Solvable Problem
-              </h2>
-
-              {/* Description */}
-              <p className="text-center text-gray-600 dark:text-gray-300 max-w-3xl mt-4 px-6">
-                Service organizations want access to excess food, but there are
-                barriers — locating the excess food, establishing their
-                credentials, and efficiently deploying resources to transport
-                food.{" "}
-                <span className="text-green-500 font-semibold">
-                  Waste No Food
-                </span>
-                breaks down these barriers.
-              </p>
-
-              {/* Stats Cards */}
-              <div className="grid md:grid-cols-3 gap-6 mt-10 max-w-5xl w-full px-6">
+              <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                 {/* Card 1 */}
-                <div className="group relative border border-green-400 p-6 rounded-lg text-center shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl">
-                  <div className="text-green-500 text-6xl mb-4 transition-transform duration-300 group-hover:rotate-12">
+                <div className="group bg-white border-2 border-green-400 p-8 rounded-xl text-center shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                  <div className="text-6xl mb-6 transition-transform duration-300 group-hover:rotate-12 mx-auto">
                     🍏
                   </div>
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
                     Raw Food
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300 mt-2">
-                    <span className="font-bold text-green-500">40%</span> of all
+                  <p className="text-gray-600">
+                    <span className="font-bold text-green-500 text-xl">40%</span> of all
                     food is wasted. In India alone, over{" "}
                     <span className="font-bold text-green-500">
                       100 billion pounds
                     </span>{" "}
                     go to waste.
                   </p>
-                  <div className="absolute inset-0 bg-green-400 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-lg"></div>
+                  <div className="absolute inset-0 bg-green-400 opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-xl"></div>
                 </div>
 
                 {/* Card 2 */}
-                <div className="group relative border border-blue-400 p-6 rounded-lg text-center shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl">
-                  <div className="text-blue-500 text-6xl mb-4 transition-transform duration-300 group-hover:rotate-12">
+                <div className="group bg-white border-2 border-blue-400 p-8 rounded-xl text-center shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                  <div className="text-6xl mb-6 transition-transform duration-300 group-hover:rotate-12 mx-auto">
                     🥪
                   </div>
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
                     Prepared Food
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300 mt-2">
+                  <p className="text-gray-600">
                     Over{" "}
-                    <span className="font-bold text-blue-500">
+                    <span className="font-bold text-blue-500 text-xl">
                       5 billion pounds
                     </span>{" "}
                     of prepared food is discarded in India daily.
                   </p>
-                  <div className="absolute inset-0 bg-blue-400 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-lg"></div>
+                  <div className="absolute inset-0 bg-blue-400 opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-xl"></div>
                 </div>
 
                 {/* Card 3 */}
-                <div className="group relative border border-red-400 p-6 rounded-lg text-center shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl">
-                  <div className="text-red-500 text-6xl mb-4 transition-transform duration-300 group-hover:rotate-12">
+                <div className="group bg-white border-2 border-red-400 p-8 rounded-xl text-center shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                  <div className="text-6xl mb-6 transition-transform duration-300 group-hover:rotate-12 mx-auto">
                     🍽️
                   </div>
-                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
                     Hunger
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300 mt-2">
-                    If just <span className="font-bold text-red-500">1/3</span>{" "}
-                    of India’s excess food were redirected, hunger could be
+                  <p className="text-gray-600">
+                    If just <span className="font-bold text-red-500 text-xl">1/3</span>{" "}
+                    of India's excess food were redirected, hunger could be
                     significantly reduced.
                   </p>
-                  <div className="absolute inset-0 bg-red-400 opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-lg"></div>
+                  <div className="absolute inset-0 bg-red-400 opacity-0 group-hover:opacity-5 transition-opacity duration-300 rounded-xl"></div>
                 </div>
               </div>
             </div>
           </section>
 
-          <section className="bg-white dark:bg-gray-900">
-            <div className="container mx-auto px-6 py-10">
-              <h1 className="text-center text-3xl font-semibold capitalize text-gray-800 dark:text-white lg:text-4xl">
-                What clients saying
-              </h1>
-
-              <div className="mx-auto mt-6 flex justify-center">
-                <span className="inline-block h-1 w-40 rounded-full bg-blue-500"></span>
-                <span className="mx-1 inline-block h-1 w-3 rounded-full bg-blue-500"></span>
-                <span className="inline-block h-1 w-1 rounded-full bg-blue-500"></span>
+          {/* Testimonials Section */}
+          <section className="py-20 bg-white">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold text-gray-900 mb-6">
+                  What Clients Are Saying
+                </h2>
+                <div className="flex justify-center items-center">
+                  <span className="inline-block h-1 w-32 rounded-full bg-blue-500"></span>
+                  <span className="mx-2 inline-block h-1 w-3 rounded-full bg-blue-500"></span>
+                  <span className="inline-block h-1 w-1 rounded-full bg-blue-500"></span>
+                </div>
               </div>
 
-              <div className="mx-auto mt-16 flex max-w-6xl items-start">
-                <button className="hidden rounded-full border p-2 text-gray-800 transition-colors duration-300 hover:bg-gray-100 rtl:-scale-x-100 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 lg:block">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M15 19l-7-7 7-7"
-                    />
+              <div className="max-w-4xl mx-auto">
+                <div className="bg-gray-50 rounded-2xl p-10 shadow-lg relative">
+                  <svg className="absolute text-blue-500 w-16 h-16 -top-8 -left-8 opacity-25" fill="currentColor" viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
                   </svg>
-                </button>
-
-                <div>
-                  <p className="flex items-center text-center text-gray-500 lg:mx-8">
+                  
+                  <p className="text-xl text-gray-600 mb-8 text-center italic">
                     This is one of the most significant benefits of giving food
                     to the poor. In a world where millions of people struggle to
                     secure their next meal, food donation drives provide a
                     much-needed lifeline to people in need.
                   </p>
 
-                  <div className="mt-8 flex flex-col items-center justify-center">
+                  <div className="flex flex-col items-center">
                     <img
-                      className="h-14 w-14 rounded-full object-cover"
+                      className="h-16 w-16 rounded-full object-cover ring-4 ring-blue-100"
                       src="https://images.unsplash.com/photo-1499470932971-a90681ce8530?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-                      alt=""
+                      alt="Mia Brown Portrait"
                     />
-
                     <div className="mt-4 text-center">
-                      <h1 className="font-semibold text-gray-800 dark:text-white">
+                      <h3 className="font-bold text-xl text-gray-900">
                         Mia Brown
-                      </h1>
-                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                      </h3>
+                      <p className="text-blue-600">
                         Marketer
-                      </span>
+                      </p>
                     </div>
                   </div>
                 </div>
-
-                <button className="hidden rounded-full border p-2 text-gray-800 transition-colors duration-300 hover:bg-gray-100 rtl:-scale-x-100 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 lg:block">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
               </div>
             </div>
           </section>
 
-          <section className="min-h-screen bg-gradient-to-r from-blue-600 via-blue-800 to-blue-900 dark:from-gray-700 dark:via-gray-800 dark:to-gray-900">
-            <div className="container mx-auto flex min-h-screen flex-col px-6 py-12">
-              <div className="flex-1 lg:-mx-6 lg:flex lg:items-center">
-                <div className="text-white lg:mx-6 lg:w-1/2">
-                  <h1 className="text-3xl font-semibold capitalize lg:text-5xl">
-                    Get a quote
-                  </h1>
-
-                  <p className="mt-6 max-w-xl">
+          {/* Contact Section */}
+          <section className="py-20 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="text-white">
+                  <h2 className="text-4xl font-bold mb-8">
+                    Get in Touch
+                  </h2>
+                  <p className="text-xl mb-12 text-blue-100">
                     Ask us everything and we would love to hear from you
                   </p>
 
-                  <div className="mt-6 space-y-8 md:mt-8">
-                    <p className="-mx-2 flex items-start">
+                  <div className="space-y-6">
+                    <div className="flex items-start">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="mx-2 h-6 w-6 text-white"
+                        className="h-6 w-6 mr-4 text-blue-300"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
-                        stroke-width="2"
+                        strokeWidth="2"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
                         />
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                         />
                       </svg>
+                      <span className="text-lg">Remote</span>
+                    </div>
 
-                      <span className="mx-2 w-72 truncate text-white">
-                        {" "}
-                        Remote
-                      </span>
-                    </p>
-
-                    <p className="-mx-2 flex items-start">
+                    <div className="flex items-start">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="mx-2 h-6 w-6 text-white"
+                        className="h-6 w-6 mr-4 text-blue-300"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
-                        stroke-width="2"
+                        strokeWidth="2"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                         />
                       </svg>
+                      <span className="text-lg">(91) 0000000000</span>
+                    </div>
 
-                      <span className="mx-2 w-72 truncate text-white">
-                        (91) 0000000000)
-                      </span>
-                    </p>
-
-                    <p className="-mx-2 flex items-start">
+                    <div className="flex items-start">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="mx-2 h-6 w-6 text-white"
+                        className="h-6 w-6 mr-4 text-blue-300"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
-                        stroke-width="2"
+                        strokeWidth="2"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                         />
                       </svg>
-
-                      <span className="mx-2 w-72 truncate text-white">
-                        acb@example.com
-                      </span>
-                    </p>
+                      <span className="text-lg">acb@example.com</span>
+                    </div>
                   </div>
 
-                  <div className="mt-6 md:mt-8">
-                    <h3 className="text-gray-300">Follow us</h3>
-
-                    <div className="-mx-1.5 mt-4 flex">
+                  <div className="mt-12">
+                    <h3 className="text-xl font-semibold text-blue-200 mb-4">Follow us</h3>
+                    <div className="flex space-x-4">
                       <a
-                        className="mx-1.5 transform text-white transition-colors duration-300 hover:text-blue-500"
+                        className="bg-white/10 hover:bg-white/20 p-3 rounded-full text-white transition-colors duration-300"
                         href="#"
+                        aria-label="Twitter"
                       >
-                        <svg
-                          className="h-10 w-10 fill-current"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M18.6668 6.67334C18.0002 7.00001 17.3468 7.13268 16.6668 7.33334C15.9195 6.49001 14.8115 6.44334 13.7468 6.84201C12.6822 7.24068 11.9848 8.21534 12.0002 9.33334V10C9.83683 10.0553 7.91016 9.07001 6.66683 7.33334C6.66683 7.33334 3.87883 12.2887 9.3335 14.6667C8.0855 15.498 6.84083 16.0587 5.3335 16C7.53883 17.202 9.94216 17.6153 12.0228 17.0113C14.4095 16.318 16.3708 14.5293 17.1235 11.85C17.348 11.0351 17.4595 10.1932 17.4548 9.34801C17.4535 9.18201 18.4615 7.50001 18.6668 6.67268V6.67334Z" />
+                        <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
                         </svg>
                       </a>
-
                       <a
-                        className="mx-1.5 transform text-white transition-colors duration-300 hover:text-blue-500"
+                        className="bg-white/10 hover:bg-white/20 p-3 rounded-full text-white transition-colors duration-300"
                         href="#"
+                        aria-label="LinkedIn"
                       >
-                        <svg
-                          className="h-8 w-8"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.2 8.80005C16.4731 8.80005 17.694 9.30576 18.5941 10.2059C19.4943 11.1061 20 12.327 20 13.6V19.2H16.8V13.6C16.8 13.1757 16.6315 12.7687 16.3314 12.4687C16.0313 12.1686 15.6244 12 15.2 12C14.7757 12 14.3687 12.1686 14.0687 12.4687C13.7686 12.7687 13.6 13.1757 13.6 13.6V19.2H10.4V13.6C10.4 12.327 10.9057 11.1061 11.8059 10.2059C12.7061 9.30576 13.927 8.80005 15.2 8.80005Z"
-                            fill="currentColor"
-                          />
-                          <path
-                            d="M7.2 9.6001H4V19.2001H7.2V9.6001Z"
-                            fill="currentColor"
-                          />
-                          <path
-                            d="M5.6 7.2C6.48366 7.2 7.2 6.48366 7.2 5.6C7.2 4.71634 6.48366 4 5.6 4C4.71634 4 4 4.71634 4 5.6C4 6.48366 4.71634 7.2 5.6 7.2Z"
-                            fill="currentColor"
-                          />
+                        <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                         </svg>
                       </a>
-
                       <a
-                        className="mx-1.5 transform text-white transition-colors duration-300 hover:text-blue-500"
+                        className="bg-white/10 hover:bg-white/20 p-3 rounded-full text-white transition-colors duration-300"
                         href="#"
+                        aria-label="Facebook"
                       >
-                        <svg
-                          className="h-8 w-8"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M7 10.2222V13.7778H9.66667V20H13.2222V13.7778H15.8889L16.7778 10.2222H13.2222V8.44444C13.2222 8.2087 13.3159 7.9826 13.4826 7.81591C13.6493 7.64921 13.8754 7.55556 14.1111 7.55556H16.7778V4H14.1111C12.9324 4 11.8019 4.46825 10.9684 5.30175C10.1349 6.13524 9.66667 7.2657 9.66667 8.44444V10.2222H7Z"
-                            fill="currentColor"
-                          />
+                        <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
                         </svg>
                       </a>
-
                       <a
-                        className="mx-1.5 transform text-white transition-colors duration-300 hover:text-blue-500"
+                        className="bg-white/10 hover:bg-white/20 p-3 rounded-full text-white transition-colors duration-300"
                         href="#"
+                        aria-label="Instagram"
                       >
-                        <svg
-                          className="h-8 w-8"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M11.9294 7.72275C9.65868 7.72275 7.82715 9.55428 7.82715 11.825C7.82715 14.0956 9.65868 15.9271 11.9294 15.9271C14.2 15.9271 16.0316 14.0956 16.0316 11.825C16.0316 9.55428 14.2 7.72275 11.9294 7.72275ZM11.9294 14.4919C10.462 14.4919 9.26239 13.2959 9.26239 11.825C9.26239 10.354 10.4584 9.15799 11.9294 9.15799C13.4003 9.15799 14.5963 10.354 14.5963 11.825C14.5963 13.2959 13.3967 14.4919 11.9294 14.4919ZM17.1562 7.55495C17.1562 8.08692 16.7277 8.51178 16.1994 8.51178C15.6674 8.51178 15.2425 8.08335 15.2425 7.55495C15.2425 7.02656 15.671 6.59813 16.1994 6.59813C16.7277 6.59813 17.1562 7.02656 17.1562 7.55495ZM19.8731 8.52606C19.8124 7.24434 19.5197 6.10901 18.5807 5.17361C17.6453 4.23821 16.51 3.94545 15.2282 3.88118C13.9073 3.80621 9.94787 3.80621 8.62689 3.88118C7.34874 3.94188 6.21341 4.23464 5.27444 5.17004C4.33547 6.10544 4.04628 7.24077 3.98201 8.52249C3.90704 9.84347 3.90704 13.8029 3.98201 15.1238C4.04271 16.4056 4.33547 17.5409 5.27444 18.4763C6.21341 19.4117 7.34517 19.7045 8.62689 19.7687C9.94787 19.8437 13.9073 19.8437 15.2282 19.7687C16.51 19.708 17.6453 19.4153 18.5807 18.4763C19.5161 17.5409 19.8089 16.4056 19.8731 15.1238C19.9481 13.8029 19.9481 9.84704 19.8731 8.52606ZM18.1665 16.5412C17.8881 17.241 17.349 17.7801 16.6456 18.0621C15.5924 18.4799 13.0932 18.3835 11.9294 18.3835C10.7655 18.3835 8.26272 18.4763 7.21307 18.0621C6.51331 17.7837 5.9742 17.2446 5.69215 16.5412C5.27444 15.488 5.37083 12.9888 5.37083 11.825C5.37083 10.6611 5.27801 8.15832 5.69215 7.10867C5.97063 6.40891 6.50974 5.8698 7.21307 5.58775C8.26629 5.17004 10.7655 5.26643 11.9294 5.26643C13.0932 5.26643 15.596 5.17361 16.6456 5.58775C17.3454 5.86623 17.8845 6.40534 18.1665 7.10867C18.5843 8.16189 18.4879 10.6611 18.4879 11.825C18.4879 12.9888 18.5843 15.4916 18.1665 16.5412Z"
-                            fill="currentColor"
-                          />
+                        <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                         </svg>
                       </a>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-8 lg:mx-6 lg:w-1/2">
-                  <div className="mx-auto w-full overflow-hidden rounded-xl bg-white px-8 py-10 shadow-2xl dark:bg-gray-900 lg:max-w-xl">
-                    <h1 className="text-2xl font-medium text-gray-700 dark:text-gray-200">
-                      Contact form
-                    </h1>
+                <div>
+                  <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
+                    <div className="p-8">
+                      <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                        Contact Form
+                      </h3>
+                      <form>
+                        <div className="mb-6">
+                          <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="name">
+                            Full Name
+                          </label>
+                          <input
+                            type="text"
+                            id="name"
+                            placeholder="John Doe"
+                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                          />
+                        </div>
 
-                    <form className="mt-6">
-                      <div className="flex-1">
-                        <label className="mb-2 block text-sm text-gray-600 dark:text-gray-200">
-                          Full Name
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="John Doe"
-                          className="mt-2 block w-full rounded-md border border-gray-200 bg-white px-5 py-3 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"
-                        />
-                      </div>
+                        <div className="mb-6">
+                          <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="email">
+                            Email Address
+                          </label>
+                          <input
+                            type="email"
+                            id="email"
+                            placeholder="johndoe@example.com"
+                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                          />
+                        </div>
 
-                      <div className="mt-6 flex-1">
-                        <label className="mb-2 block text-sm text-gray-600 dark:text-gray-200">
-                          Email address
-                        </label>
-                        <input
-                          type="email"
-                          placeholder="johndoe@example.com"
-                          className="mt-2 block w-full rounded-md border border-gray-200 bg-white px-5 py-3 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"
-                        />
-                      </div>
+                        <div className="mb-6">
+                          <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="message">
+                            Message
+                          </label>
+                          <textarea
+                            id="message"
+                            // rows="6"
+                            placeholder="Your message here..."
+                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors"
+                          ></textarea>
+                        </div>
 
-                      <div className="mt-6 w-full">
-                        <label className="mb-2 block text-sm text-gray-600 dark:text-gray-200">
-                          Message
-                        </label>
-                        <textarea
-                          className="mt-2 block h-32 w-full rounded-md border border-gray-200 bg-white px-5 py-3 text-gray-700 placeholder-gray-400 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300 md:h-48"
-                          placeholder="Message"
-                        ></textarea>
-                      </div>
-
-                      <button className="mt-6 w-full transform rounded-md bg-blue-600 px-6 py-3 text-sm font-medium capitalize tracking-wide text-white transition-colors duration-300 hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-400 focus:ring-opacity-50">
-                        get in touch
-                      </button>
-                    </form>
+                        <button
+                          type="submit"
+                          className="w-full bg-blue-600 text-white font-medium py-3 px-4 rounded-lg shadow hover:bg-blue-700 transition-colors focus:outline-none focus:ring-4 focus:ring-blue-300"
+                        >
+                          Get in Touch
+                        </button>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>

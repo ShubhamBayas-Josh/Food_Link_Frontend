@@ -7,6 +7,7 @@ import { useState } from "react";
 
 interface LoginResponse {
   user: {
+    user_id: number
     email: string;
     token: string;
     role: string; // Added role for navigation

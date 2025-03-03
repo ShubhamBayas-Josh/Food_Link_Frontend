@@ -66,7 +66,8 @@ export default function SignUp() {
         email: data.user.email,
         token: data.token,
         role: data.user.role,
-        exp: data.exp, // Token expiration time
+        exp: data.exp,
+        user_id: data.user_id,
       });
 
       // Redirect to the dashboard or home page

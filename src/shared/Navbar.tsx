@@ -63,12 +63,18 @@ export default function Navbar() {
               {isDropdownOpen && (
                 <ul className="absolute left-0 mt-2 w-48 bg-white text-black shadow-lg rounded-md overflow-hidden">
                   <li>
-                    <Link to="/login" className="block px-4 py-2 hover:bg-gray-200">
+                    <Link
+                      to="/login"
+                      className="block px-4 py-2 hover:bg-gray-200"
+                    >
                       Login
                     </Link>
                   </li>
                   <li>
-                    <Link to="/signup" className="block px-4 py-2 hover:bg-gray-200">
+                    <Link
+                      to="/signup"
+                      className="block px-4 py-2 hover:bg-gray-200"
+                    >
                       Sign Up
                     </Link>
                   </li>
@@ -78,9 +84,17 @@ export default function Navbar() {
           )}
 
           <li>
-            <Link to="/contact" className="hover:text-gray-300">
-              Contact
-            </Link>
+            {localStorage.getItem("user") &&
+            JSON.parse(localStorage.getItem("user")!).role === "ngo" ? (
+              <Link to="/ngos" className="hover:text-gray-300">
+                Claim
+              </Link>
+            ) : localStorage.getItem("user") &&
+              JSON.parse(localStorage.getItem("user")!).role === "donor" ? (
+              <Link to="/donors" className="hover:text-gray-300">
+                Donate
+              </Link>
+            ) : null}
           </li>
         </ul>
       </div>
@@ -119,12 +133,18 @@ export default function Navbar() {
               {isDropdownOpen && (
                 <ul className="mt-2 bg-gray-600 rounded-md overflow-hidden">
                   <li>
-                    <Link to="/login" className="block px-4 py-2 hover:bg-gray-500">
+                    <Link
+                      to="/login"
+                      className="block px-4 py-2 hover:bg-gray-500"
+                    >
                       Login
                     </Link>
                   </li>
                   <li>
-                    <Link to="/signup" className="block px-4 py-2 hover:bg-gray-500">
+                    <Link
+                      to="/signup"
+                      className="block px-4 py-2 hover:bg-gray-500"
+                    >
                       Sign Up
                     </Link>
                   </li>
