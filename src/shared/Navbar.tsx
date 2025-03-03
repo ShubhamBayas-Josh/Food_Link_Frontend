@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
-import { useAuth } from "../pages/AuthContext"; // ✅ Adjust the path correctly
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../pages/AuthContext"; // 
+import ProjectLogo from "../assets/ProjectLogo.png"; 
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -9,16 +10,22 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // ✅ Logout handler that logs out and redirects to "/"
+
   const handleLogout = () => {
     logout();
-    navigate("/"); // Redirect to home after logout
+    navigate("/"); 
   };
 
   return (
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-white text-xl font-bold">
+        {/* Logo & Title */}
+
+        
+        <Link
+          to="/"
+          className="flex items-center text-white text-xl font-bold ">
+          <img src={ProjectLogo} alt="Logo" className="h-12 w-auto mr-2 pr-3" />
           Meal Link
         </Link>
 
@@ -31,7 +38,7 @@ export default function Navbar() {
         </button>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex space-x-6 text-white">
+        <ul className="hidden md:flex space-x-6 text-white ">
           <li>
             <Link to="/" className="hover:text-gray-300">
               Home
@@ -42,46 +49,11 @@ export default function Navbar() {
               About
             </Link>
           </li>
-
-          {user ? (
-            <li>
-              <button
-                onClick={handleLogout}
-                className="bg-red-500 px-4 py-2 rounded-md hover:bg-red-600"
-              >
-                Logout
-              </button>
-            </li>
-          ) : (
-            <li className="relative">
-              <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center hover:text-gray-300 focus:outline-none"
-              >
-                Auth <ChevronDown size={16} className="ml-1" />
-              </button>
-              {isDropdownOpen && (
-                <ul className="absolute left-0 mt-2 w-48 bg-white text-black shadow-lg rounded-md overflow-hidden">
-                  <li>
-                    <Link
-                      to="/login"
-                      className="block px-4 py-2 hover:bg-gray-200"
-                    >
-                      Login
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to="/signup"
-                      className="block px-4 py-2 hover:bg-gray-200"
-                    >
-                      Sign Up
-                    </Link>
-                  </li>
-                </ul>
-              )}
-            </li>
-          )}
+          <li>
+            <Link to="/donor_profile" className="block">
+              Profile
+            </Link>
+          </li>
 
           <li>
             {localStorage.getItem("user") &&
@@ -95,7 +67,26 @@ export default function Navbar() {
                 Donate
               </Link>
             ) : null}
+
           </li>
+        </ul>
+        <ul>
+        {user ? (
+            <li>
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 text-white hover:text-gray-300 p-1"
+              >
+                Logout
+              </button>
+            </li>
+          ) : (
+            <li>
+              <Link to="/login" className="hover:text-gray-300 text-white ml-10">
+                Sign In
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
 
@@ -112,6 +103,7 @@ export default function Navbar() {
               About
             </Link>
           </li>
+        
 
           {user ? (
             <li>
