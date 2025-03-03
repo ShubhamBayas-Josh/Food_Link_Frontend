@@ -1,84 +1,4 @@
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../shared/Navbar";
-import { useAuth } from "../pages/AuthContext"; 
-
-// Define TypeScript interface for form values
-interface FormValues {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  address: string;
-  role: string;
-  organizationType: string;
-}
-
-export default function SignUp() {
-  const navigate = useNavigate();
-  const { login } = useAuth(); 
-
-  const formik = useFormik<FormValues>({
-    initialValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      address: "",
-      role: "donor",
-      organizationType: "non-profit",
-    },
-    validationSchema: Yup.object({
-      name: Yup.string().required("Name is required"),
-      email: Yup.string().email("Invalid email format").required("Email is required"),
-      password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref("password")], "Passwords must match")
-        .required("Confirm Password is required"),
-      address: Yup.string().required("Address is required"),
-      role: Yup.string().oneOf(["donor", "ngo"]).required("Role is required"),
-      organizationType: Yup.string().required("Organization type is required"),
-    }),
-    onSubmit: async (values) => {
-      try {
-        const response = await fetch("http://127.0.0.1:3000/api/v1/auth/signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        });
-
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.message || "Signup failed");
-        }
-
-        login({
-          email: data.user.email,
-          token: data.token,
-          role: data.user.role,
-          exp: data.exp,
-          user_id: data.user_id,
-        });
-
-        navigate(data.user.role === "ngo" ? "/ngos" : "/donors");
-      } catch (err) {
-        console.error(err);
-      }
-    },
-  });
-
-  return (
-    <>
-      <div className="fixed w-full z-10">
-        <Navbar />
-      </div>
-      <div className="flex h-screen">
-         {/* Left Section - SVG Illustration */}
-         <div className="hidden md:flex md:w-1/2 bg-gray-200 justify-center items-center">
-          <svg
+<svg
             xmlns="http://www.w3.org/2000/svg"
             width="524.67004"
             height="531.39694"
@@ -251,136 +171,54 @@ export default function SignUp() {
                   fill="#ffb6b6"
                 />
                 <polygon
-                  points="399.79492 400.61868 406.35291 426.59497 374.25586 477.97375 341.48965 510.90475 330.86948 502.09406 363.91479 460.97745 388."
-                  /* Continuing from where the code was cut off */
+                  points="399.79492 400.61868 406.35291 426.59497 374.25586 477.97375 341.48965 510.90475 330.86948 502.09406 363.91479 460.97745 388.96295 407.99997 399.79492 400.61868"
+                  fill="#e6e6e6"
                 />
               </g>
+              <path
+                d="M365.24362,357.68896c4.94998-.01184,5.23102,.02112,6.03156,0,6.1395-.1619,7.74496-2.57733,10.85684-2.41263,5.55417,.29398-1.77649,28.14084-4.82526,41.01468-2.99002,12.62589,7.11493,23.9397,7.84103,24.72943,10.25668,11.15479,28.27277,13.19449,31.36417,8.44421,2.50223-3.84491-6.36569-9.69107-4.22211-18.0947,2.09543-8.21484,11.77112-7.34009,14.47577-15.07892,2.83246-8.10455-6.68613-12.19214-12.66629-31.96732-3.43442-11.35699-2.82687-13.47311-6.03156-20.50732-8.56613-18.80209-50.55359-10.79666-45.83994,6.63474,.9118,3.37189-1.51474,7.24872,3.01578,7.23788v-.00006Z"
+                fill="#2f2e41"
+              />
             </g>
-          </svg>
-        </div>
-
-        {/* Right Section */}
-        <div className="w-full md:w-1/2 flex justify-center items-center pt-6">
-          <div className="w-full max-w-md">
-            <h2 className="text-2xl font-bold mb-6 text-center pt-20">Sign Up</h2>
-
-            <form onSubmit={formik.handleSubmit}>
-              {/* Name Field */}
-              <div className="mb-4">
-                <label className="block text-gray-700">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-                />
-                {formik.errors.name && <p className="text-red-500">{formik.errors.name}</p>}
-              </div>
-
-              {/* Email Field */}
-              <div className="mb-4">
-                <label className="block text-gray-700">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-                />
-                {formik.errors.email && <p className="text-red-500">{formik.errors.email}</p>}
-              </div>
-
-              {/* Password Fields */}
-              <div className="mb-4">
-                <label className="block text-gray-700">Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-                />
-                {formik.errors.password && <p className="text-red-500">{formik.errors.password}</p>}
-              </div>
-
-              <div className="mb-4">
-                <label className="block text-gray-700">Confirm Password</label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  value={formik.values.confirmPassword}
-                  onChange={formik.handleChange}
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-                />
-                {formik.errors.confirmPassword && (
-                  <p className="text-red-500">{formik.errors.confirmPassword}</p>
-                )}
-              </div>
-
-              {/* Address Field */}
-              <div className="mb-4">
-                <label className="block text-gray-700">Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  value={formik.values.address}
-                  onChange={formik.handleChange}
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-                />
-                {formik.errors.address && <p className="text-red-500">{formik.errors.address}</p>}
-              </div>
-
-              {/* Role Dropdown */}
-              <div className="mb-4">
-                <label className="block text-gray-700">Role</label>
-                <select
-                  name="role"
-                  value={formik.values.role}
-                  onChange={formik.handleChange}
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-                >
-                  <option value="donor">Donor</option>
-                  <option value="ngo">NGO</option>
-                </select>
-              </div>
-
-              {/* Organization Type Dropdown */}
-              <div className="mb-4">
-                <label className="block text-gray-700">Organization Type</label>
-                <select
-                  name="organizationType"
-                  value={formik.values.organizationType}
-                  onChange={formik.handleChange}
-                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-200"
-                >
-                  <option value="non-profit">Non-Profit</option>
-                  <option value="government">Government</option>
-                  <option value="private">Private</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              {/* Submit Button */}
-              <div className="mb-6">
-                <button
-                  type="submit"
-                  className="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800"
-                >
-                  Sign Up
-                </button>
-              </div>
-            </form>
-
-            <p className="text-center text-gray-600">
-              Already have an account?{" "}
-              <Link to="/login" className="text-blue-500">
-                Log in
-              </Link>
-            </p>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}
+            <g>
+              <path
+                d="M426.8764,128.56088H224.02585c-5.7366,0-10.4035-4.66732-10.4035-10.4035V10.4035c0-5.73617,4.6669-10.4035,10.4035-10.4035h202.85056c5.7366,0,10.4035,4.66732,10.4035,10.4035V118.15739c0,5.73617-4.6669,10.4035-10.4035,10.4035Z"
+                fill="#fff"
+              />
+              <path
+                d="M426.8764,128.56088H224.02585c-5.7366,0-10.4035-4.66732-10.4035-10.4035V10.4035c0-5.73617,4.6669-10.4035,10.4035-10.4035h202.85056c5.7366,0,10.4035,4.66732,10.4035,10.4035V118.15739c0,5.73617-4.6669,10.4035-10.4035,10.4035ZM224.02585,1.73731c-4.77844,0-8.66618,3.88774-8.66618,8.66619V118.15739c0,4.77845,3.88774,8.66619,8.66618,8.66619h202.85056c4.77844,0,8.6662-3.88774,8.6662-8.66619V10.4035c0-4.77845-3.88773-8.66619-8.6662-8.66619H224.02585Z"
+                fill="#3f3d56"
+              />
+              <circle cx="411.22028" cy="10.42386" r="2.60596" fill="#3f3d56" />
+              <circle cx="418.16949" cy="10.42386" r="2.60596" fill="#3f3d56" />
+              <circle cx="425.11874" cy="10.42386" r="2.60596" fill="#3f3d56" />
+              <path
+                d="M228.38948,52.5536c-.71851,0-1.30298,.58448-1.30298,1.30298,0,.35035,.1353,.67439,.38087,.91361,.2477,.25364,.57217,.38937,.9221,.38937h194.99193c.71851,0,1.30298-.58448,1.30298-1.30298,0-.35035-.13531-.67439-.38089-.91361-.24771-.25364-.57217-.38937-.92209-.38937H228.38948Z"
+                fill="#e6e6e6"
+              />
+              <path
+                d="M399.05911,52.11928v3.47462H228.38948c-.47775,0-.91208-.19113-1.22478-.51253-.32146-.3127-.51253-.74703-.51253-1.22478,0-.95555,.78181-1.73731,1.7373-1.73731h170.66963Z"
+                fill="#000000"
+              />
+              <path
+                d="M421.20978,45.60437h-17.37308c-1.91589,0-3.47461-1.55832-3.47461-3.47462s1.55875-3.47462,3.47461-3.47462h17.37308c1.91589,0,3.47461,1.55832,3.47461,3.47462s-1.55875,3.47462-3.47461,3.47462Z"
+                fill="#e6e6e6"
+              />
+              <path
+                d="M307.41605,27.36262h-77.72357c-1.91588,0-3.47462-1.55832-3.47462-3.47462s1.55875-3.47462,3.47462-3.47462h77.72357c1.91589,0,3.47461,1.55832,3.47461,3.47462s-1.55875,3.47462-3.47461,3.47462Z"
+                fill="#e6e6e6"
+              />
+              <path
+                d="M228.38948,91.64306c-.71851,0-1.30298,.58448-1.30298,1.30298,0,.35035,.1353,.67439,.38087,.91361,.2477,.25364,.57217,.38937,.9221,.38937h194.99193c.71851,0,1.30298-.58448,1.30298-1.30298,0-.35035-.13531-.67439-.38089-.91361-.24771-.25364-.57217-.38937-.92209-.38937H228.38948Z"
+                fill="#e6e6e6"
+              />
+              <path
+                d="M332.1727,91.20873v3.47462h-103.78322c-.47775,0-.91208-.19113-1.22478-.51253-.32146-.3127-.51253-.74703-.51253-1.22478,0-.95555,.78181-1.73731,1.7373-1.73731h103.78322Z"
+                fill="#000000"
+              />
+              <path
+                d="M421.20978,84.69383h-17.37308c-1.91589,0-3.47461-1.55832-3.47461-3.47462s1.55875-3.47462,3.47461-3.47462h17.37308c1.91589,0,3.47461,1.55832,3.47461,3.47462s-1.55875,3.47462-3.47461,3.47462Z"
+                fill="#e6e6e6"
+              />
+            </g>
+</svg>

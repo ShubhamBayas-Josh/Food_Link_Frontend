@@ -1,30 +1,30 @@
 import { useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../pages/AuthContext"; // 
-import ProjectLogo from "../assets/ProjectLogo.png"; 
+import { useAuth } from "../pages/AuthContext";
+import ProjectLogo from "../assets/ProjectLogo.png";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  // Retrieve role from localStorage safely
+  const storedUser = localStorage.getItem("user");
+  const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+  const role = parsedUser?.role;
 
   const handleLogout = () => {
     logout();
-    navigate("/"); 
+    navigate("/");
   };
 
   return (
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo & Title */}
-
-        
-        <Link
-          to="/"
-          className="flex items-center text-white text-xl font-bold ">
+        <Link to="/" className="flex items-center text-white text-xl font-bold">
           <img src={ProjectLogo} alt="Logo" className="h-12 w-auto mr-2 pr-3" />
           Meal Link
         </Link>
@@ -38,7 +38,7 @@ export default function Navbar() {
         </button>
 
         {/* Desktop Menu */}
-        <ul className="hidden md:flex space-x-6 text-white ">
+        <ul className="hidden md:flex space-x-6 text-white">
           <li>
             <Link to="/" className="hover:text-gray-300">
               Home
@@ -49,29 +49,41 @@ export default function Navbar() {
               About
             </Link>
           </li>
-          <li>
-            <Link to="/donor_profile" className="block">
-              Profile
-            </Link>
-          </li>
 
-          <li>
-            {localStorage.getItem("user") &&
-            JSON.parse(localStorage.getItem("user")!).role === "ngo" ? (
+          {/* Profile Link Based on Role */}
+          {role === "donor" ? (
+            <li>
+              <Link to="/donor_profile" className="hover:text-gray-300">
+                Profile
+              </Link>
+            </li>
+          ) : role === "ngo" ? (
+            <li>
+              <Link to="/ngo_profile" className="hover:text-gray-300">
+                Profile
+              </Link>
+            </li>
+          ) : null}
+
+          {/* Conditional Claim/Donate Links */}
+          {role === "ngo" ? (
+            <li>
               <Link to="/ngos" className="hover:text-gray-300">
                 Claim
               </Link>
-            ) : localStorage.getItem("user") &&
-              JSON.parse(localStorage.getItem("user")!).role === "donor" ? (
+            </li>
+          ) : role === "donor" ? (
+            <li>
               <Link to="/donors" className="hover:text-gray-300">
                 Donate
               </Link>
-            ) : null}
-
-          </li>
+            </li>
+          ) : null}
         </ul>
+
+        {/* Authentication Section */}
         <ul>
-        {user ? (
+          {user ? (
             <li>
               <button
                 onClick={handleLogout}
@@ -103,8 +115,38 @@ export default function Navbar() {
               About
             </Link>
           </li>
-        
 
+          {/* Profile Link for Mobile Menu */}
+          {role === "donor" ? (
+            <li>
+              <Link to="/donor_profile" className="block">
+                Profile
+              </Link>
+            </li>
+          ) : role === "ngo" ? (
+            <li>
+              <Link to="/ngo_profile" className="block">
+                Profile
+              </Link>
+            </li>
+          ) : null}
+
+          {/* Conditional Claim/Donate Links */}
+          {role === "ngo" ? (
+            <li>
+              <Link to="/ngos" className="block">
+                Claim
+              </Link>
+            </li>
+          ) : role === "donor" ? (
+            <li>
+              <Link to="/donors" className="block">
+                Donate
+              </Link>
+            </li>
+          ) : null}
+
+          {/* Authentication for Mobile Menu */}
           {user ? (
             <li>
               <button

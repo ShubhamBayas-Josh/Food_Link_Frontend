@@ -10,6 +10,7 @@ type ClaimData = {
   food_transaction_id: number;
   user_id: number; // Donor's ID
   creator_user_id: number; // Logged-in NGO's ID
+  update_transaction_status: boolean; // New field to tell backend to update the transaction status
 };
 
 type FoodTransaction = {
@@ -45,7 +46,6 @@ const getUserIdFromToken = (): number | null => {
       localStorage.removeItem("token");
       return null;
     }
-    console.log("Decoded token:", decodedToken);
     return decodedToken.user_id;
   } catch (error) {
     console.error("Error decoding token:", error);
@@ -71,23 +71,60 @@ const fetchData = async (): Promise<FoodTransaction[]> => {
   return response.json();
 };
 
-// Updated: wrap claimData inside a food_claim key so Rails strong parameters work
+// Let the backend handle both operations to avoid CORS issues
 const createFoodClaim = async (claimData: ClaimData): Promise<unknown> => {
   const token = localStorage.getItem("token");
 
+  // Send a single request to create the claim and update the transaction
   const response = await fetch("http://127.0.0.1:3000/api/v1/food_claims", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ food_claim: claimData }),
+    body: JSON.stringify({ 
+      food_claim: {
+        ...claimData,
+        update_transaction_status: true // Tell backend to update transaction status too
+      } 
+    }),
   });
 
   if (!response.ok) {
     throw new Error("Failed to create claim");
   }
+
   return response.json();
+};
+
+// Calculate days until expiration
+const getDaysUntilExpiration = (expirationDate: string): number => {
+  const today = new Date();
+  const expDate = new Date(expirationDate);
+  const diffTime = expDate.getTime() - today.getTime();
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+};
+
+// Format date to a more readable format
+const formatDate = (dateString: string): string => {
+  const options: Intl.DateTimeFormatOptions = { 
+    year: 'numeric', 
+    month: 'short', 
+    day: 'numeric' 
+  };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
+
+// Determine if item is about to expire
+
+// Get appropriate color for expiration indicator
+const getExpirationColor = (expirationDate: string): string => {
+  const daysLeft = getDaysUntilExpiration(expirationDate);
+  
+  if (daysLeft < 0) return "bg-red-500"; // Expired
+  if (daysLeft <= 2) return "bg-red-400"; // Almost expired
+  if (daysLeft <= 5) return "bg-yellow-400"; // Soon to expire
+  return "bg-green-400"; // Plenty of time
 };
 
 const TransactionList = () => {
@@ -106,6 +143,7 @@ const TransactionList = () => {
     isLoading,
     isError,
     error,
+    refetch, // Used to refresh data after successful claim
   } = useQuery({
     queryKey: ["foodTransactions"],
     queryFn: fetchData,
@@ -116,6 +154,7 @@ const TransactionList = () => {
     onSuccess: () => {
       alert("Claim created successfully!");
       setConfirmingItem(null);
+      refetch(); // Refetch data after successful claim
     },
     onError: (error) => {
       alert("Error creating claim: " + error.message);
@@ -150,11 +189,12 @@ const TransactionList = () => {
     }
 
     const claimData: ClaimData = {
-      claimed_quantity: selectedTransaction.quantity.toString(), // Taking quantity from the selected food transaction
+      claimed_quantity: selectedTransaction.quantity.toString(),
       claim_status: "in_progress",
       food_transaction_id: foodTransactionId,
       user_id: selectedTransaction.user_id,
       creator_user_id: currentUserId,
+      update_transaction_status: true // Add this new field
     };
 
     mutation.mutate(claimData);
@@ -164,8 +204,6 @@ const TransactionList = () => {
     setConfirmingItem(null);
   };
 
-  // Helper functions for UI (getFoodIcon, getStatusColor, formatExpirationDate, isItemExpired)
-  // would remain the same as your existing code.
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState("");
   useEffect(() => {
@@ -176,6 +214,30 @@ const TransactionList = () => {
     }
   }, []);
 
+  // Filter transactions to only include "pending" status
+  const filteredTransactions = foodTransactions?.filter(
+    (transaction) => transaction.status.toLowerCase() === "pending"
+  );
+
+  // Get appropriate food emoji based on food type
+  const getFoodEmoji = (foodType: string): string => {
+    const typeToEmoji: Record<string, string> = {
+      vegetables: "🥦",
+      fruits: "🍎",
+      grains: "🌾",
+      dairy: "🥛",
+      protein: "🥩",
+      cooked: "🍲",
+      bakery: "🍞",
+      canned: "🥫",
+      beverage: "🥤",
+      snack: "🍪",
+      frozen: "🧊",
+      prepared: "🍱",
+    };
+    return typeToEmoji[foodType.toLowerCase()] || "🍽️";
+  };
+
   return (
     <>
       <div className="flex flex-col min-h-screen bg-gray-50">
@@ -185,12 +247,28 @@ const TransactionList = () => {
             <main className="flex-1 p-6">
               <div className="max-w-7xl mx-auto">
                 <header className="mb-8 text-center">
-                  <h1 className="text-3xl font-bold text-gray-900">
+                  <h1 className="text-3xl font-bold text-gray-900 mb-2">
                     Available Food Donations
                   </h1>
-                  <p className="mt-2 text-gray-600">
-                    Browse and claim available food donations in your area
+                  <p className="mt-2 text-gray-600 max-w-2xl mx-auto">
+                    Browse and claim available food donations in your area. Items with red indicators are expiring soon.
                   </p>
+                  
+                  {/* Color legend */}
+                  <div className="flex items-center justify-center space-x-6 mt-4">
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 rounded-full bg-green-400 mr-2"></div>
+                      <span className="text-sm text-gray-600">Not Expiring Soon</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 rounded-full bg-yellow-400 mr-2"></div>
+                      <span className="text-sm text-gray-600">Expiring Soon</span>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 rounded-full bg-red-400 mr-2"></div>
+                      <span className="text-sm text-gray-600">Expiring Very Soon</span>
+                    </div>
+                  </div>
                 </header>
 
                 {isLoading && (
@@ -214,12 +292,12 @@ const TransactionList = () => {
 
                 {!isLoading &&
                   !isError &&
-                  foodTransactions &&
-                  foodTransactions.length === 0 && (
-                    <div className="text-center py-16 bg-white rounded-lg shadow">
+                  filteredTransactions &&
+                  filteredTransactions.length === 0 && (
+                    <div className="text-center py-16 bg-white rounded-lg shadow-md">
                       <div className="text-5xl mb-4">🍽️</div>
                       <h3 className="text-lg font-medium text-gray-900">
-                        No donations available
+                        No pending donations available
                       </h3>
                       <p className="mt-2 text-gray-500">
                         Check back later for new donations
@@ -230,13 +308,15 @@ const TransactionList = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {!isLoading &&
                     !isError &&
-                    foodTransactions &&
-                    foodTransactions.map((item: FoodTransaction) => {
-                      const expired = false; // Replace with your isItemExpired(item.expiration_date) logic
+                    filteredTransactions &&
+                    filteredTransactions.map((item: FoodTransaction) => {
+                      const isExpired = getDaysUntilExpiration(item.expiration_date) < 0;
                       const canClaim =
                         ["available", "pending"].includes(
                           item.status?.toLowerCase()
-                        ) && !expired;
+                        ) && !isExpired;
+                      const expirationColor = getExpirationColor(item.expiration_date);
+                      const daysUntilExpiration = getDaysUntilExpiration(item.expiration_date);
 
                       return (
                         <div
@@ -245,12 +325,12 @@ const TransactionList = () => {
                           onMouseEnter={() => setHoveredId(item.id)}
                           onMouseLeave={() => setHoveredId(null)}
                         >
-                          <div className="p-1 bg-gradient-to-r from-green-400 to-blue-500"></div>
+                          <div className={`p-1 ${expirationColor}`}></div>
                           <div className="p-6">
                             <div className="flex justify-between items-start">
-                              <div>
-                                <span className="inline-block text-3xl mb-2">
-                                  🍽️
+                              <div className="flex items-center">
+                                <span className="inline-block text-3xl mr-3">
+                                  {getFoodEmoji(item.food_type)}
                                 </span>
                                 <h2 className="text-xl font-semibold text-gray-800">
                                   {item.food_name}
@@ -261,42 +341,81 @@ const TransactionList = () => {
                               </span>
                             </div>
 
-                            <div className="mt-4 space-y-2">
+                            <div className="mt-4 space-y-2.5">
                               <div className="flex items-center text-sm text-gray-600">
+                                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+                                </svg>
                                 <span className="font-medium mr-2">Type:</span>{" "}
                                 {item.food_type}
                               </div>
                               <div className="flex items-center text-sm text-gray-600">
+                                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+                                </svg>
                                 <span className="font-medium mr-2">
                                   Quantity:
                                 </span>{" "}
                                 {item.quantity}
                               </div>
                               <div className="flex items-center text-sm text-gray-600">
+                                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
                                 <span className="font-medium mr-2">
                                   Transaction:
                                 </span>{" "}
                                 {item.transaction_type}
                               </div>
                               <div className="flex items-start text-sm text-gray-600">
+                                <svg className="h-4 w-4 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
                                 <span className="font-medium mr-2">
                                   Location:
                                 </span>
                                 <span className="flex-1">{item.address}</span>
                               </div>
+                              <div className={`flex items-center text-sm ${isExpired ? 'text-red-600 font-semibold' : 'text-gray-600'}`}>
+                                <svg className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span className="font-medium mr-2">
+                                  Expires:
+                                </span>{" "}
+                                <span>
+                                  {formatDate(item.expiration_date)}
+                                  {daysUntilExpiration < 0 
+                                    ? " (Expired)" 
+                                    : daysUntilExpiration === 0 
+                                      ? " (Today)" 
+                                      : ` (${daysUntilExpiration} day${daysUntilExpiration === 1 ? '' : 's'})`}
+                                </span>
+                              </div>
                             </div>
 
                             <div className="mt-4">
-                              <p className="text-sm text-gray-700">
-                                {item.description}
+                              <p className="text-sm text-gray-700 bg-gray-50 p-3 rounded-lg italic">
+                                "{item.description}"
                               </p>
                             </div>
 
-                            <div className="mt-4 pt-4 border-t border-gray-100">
+                            <div className="mt-6 pt-4 border-t border-gray-100">
                               <div className="flex justify-between items-center">
-                                <span className="text-sm font-medium text-gray-600">
-                                  Expiration info
-                                </span>
+                                {isExpired ? (
+                                  <span className="text-sm font-medium text-red-600">
+                                    This item has expired
+                                  </span>
+                                ) : (
+                                  <span className="text-sm font-medium text-gray-600">
+                                    {daysUntilExpiration === 0 
+                                      ? "Expires today!" 
+                                      : daysUntilExpiration === 1 
+                                        ? "Expires tomorrow!" 
+                                        : `${daysUntilExpiration} days until expiration`}
+                                  </span>
+                                )}
                                 {confirmingItem === item.id ? (
                                   <div className="flex space-x-2">
                                     <button
@@ -319,7 +438,7 @@ const TransactionList = () => {
                                     className={`py-2 px-4 rounded-lg text-sm font-medium transition-all duration-300 ${
                                       canClaim
                                         ? hoveredId === item.id
-                                          ? "bg-green-600 text-white"
+                                          ? "bg-green-600 text-white shadow-md"
                                           : "bg-green-500 text-white"
                                         : "bg-gray-200 text-gray-500 cursor-not-allowed"
                                     }`}
@@ -341,9 +460,15 @@ const TransactionList = () => {
               </div>
             </main>
           ) : (
-            <p className="text-red-500 text-lg font-bold flex items-center justify-center h-screen">
-              Please wait for approval.
-            </p>
+            <div className="flex flex-col items-center justify-center h-screen bg-gray-50">
+              <div className="text-5xl mb-4">⏳</div>
+              <p className="text-xl font-semibold text-gray-800 mb-2">
+                Account Pending Approval
+              </p>
+              <p className="text-gray-600 max-w-md text-center">
+                Your NGO account is currently awaiting administrator approval. You'll have access to the donation platform once approved.
+              </p>
+            </div>
           )}
         </div>
       </div>

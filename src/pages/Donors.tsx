@@ -9,6 +9,7 @@ import { jwtDecode } from "jwt-decode";
 import Navbar from "../shared/Navbar";
 import { motion } from "framer-motion";
 import Footer from "../shared/footer";
+
 import {
   TrendingUp,
   Clock,

@@ -6,6 +6,7 @@ import Donors from '../pages/Donors';
 import About from '../pages/About';
 import Ngos from '../pages/Ngos';
 import DonorProfile from '../pages/DonorProfile';
+import NGOProfile from '../pages/NGOProfile';
 // import { Sidebar } from 'lucide-react';
 
 const router = createBrowserRouter([
@@ -42,6 +43,11 @@ const router = createBrowserRouter([
     {
         path: '/donor_profile',
         element: <DonorProfile />,
+    },
+
+    {
+        path: '/ngo_profile',
+        element: <NGOProfile />,
     },
 
     
