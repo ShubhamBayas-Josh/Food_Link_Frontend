@@ -11,6 +11,7 @@ import Footer from "../shared/footer"
 const Home = () => {
   return (
     <>
+    
       <div className="fixed w-full z-50">
         <Navbar />
       </div>

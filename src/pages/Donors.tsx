@@ -9,6 +9,7 @@ import { jwtDecode } from "jwt-decode";
 import Navbar from "../shared/Navbar";
 import { motion } from "framer-motion";
 import Footer from "../shared/footer";
+import toast from "react-hot-toast"
 
 import {
   TrendingUp,
@@ -45,6 +46,7 @@ const getUserIdFromToken = (): string | null => {
   }
 };
 
+//animations
 const itemVariants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
@@ -65,7 +67,7 @@ const containerVariants = {
   },
 };
 
-// Define validation schema using Yup
+// validation schema using Yup
 const validationSchema = Yup.object({
   food_type: Yup.string().required("Food type is required"),
   quantity: Yup.number()
@@ -81,12 +83,12 @@ const validationSchema = Yup.object({
 const Donors: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const queryClient = useQueryClient();
-  const userId = getUserIdFromToken(); // Get user ID dynamically
+  const userId = getUserIdFromToken(); 
 
   const mutation = useMutation({
     mutationFn: async (newTransaction: any) => {
       const token = localStorage.getItem("token");
-      if (!token) throw new Error("User not authenticated. Please log in.");
+      if (!token) toast.error("User not authenticated. Please log in.");
 
       const response = await axios.post(
         "http://127.0.0.1:3000/api/v1/food_transactions",
@@ -101,14 +103,15 @@ const Donors: React.FC = () => {
       return response.data;
     },
     onSuccess: () => {
-      alert("Donation submitted successfully!");
+
+      toast.success("Donation submitted successfully!");
+
       queryClient.invalidateQueries({ queryKey: ["food_transactions"] });
       setOpen(false);
     },
     onError: (error: any) => {
       console.error("Submission error:", error.response?.data || error.message);
-      alert(
-        `Failed to submit donation: ${
+      toast.error(`Failed to submit donation: ${
           error.response?.data?.message || error.message
         }`
       );
@@ -126,7 +129,7 @@ const Donors: React.FC = () => {
     validationSchema,
     onSubmit: (values) => {
       if (!userId) {
-        alert("User not authenticated. Please log in.");
+        toast.error("User not authenticated. Please log in.");
         return;
       }
 

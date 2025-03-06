@@ -145,7 +145,7 @@ const DonorProfile = () => {
 
   return (
     <>
-    <div className="flex flex-col min-h-screen bg-gray-50 ">
+    <div className="flex flex-col min-h-screen bg-gray-50 pt-20">
               <Navbar />
     
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4">

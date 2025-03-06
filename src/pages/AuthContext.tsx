@@ -69,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem("token", userData.token); // Ensure token is stored
       localStorage.setItem("user", JSON.stringify(updatedUser));
     } catch (error) {
-      console.error("❌ Error decoding token:", error);
+      console.error("Error decoding token:", error);
     }
   }, []);
   
@@ -82,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     console.info("User logged out successfully.");
   }, []);
 
-  // ✅ Auto-logout when token expires
+  //  Auto-logout when token expires
   useEffect(() => {
     if (!user?.exp) return;
 

@@ -148,7 +148,7 @@ const NGOProfile = () => {
 
   return (
     <>
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-gray-50 pt-12 mt-10">
       <Navbar />
     
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-teal-50 py-8 px-4">

@@ -1,3 +1,4 @@
+//Imports
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../shared/Navbar";
 import { useMutation } from "@tanstack/react-query";
@@ -5,13 +6,14 @@ import { useAuth } from "../pages/AuthContext";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-hot-toast"; 
 
 interface LoginResponse {
   user: {
     user_id: number;
     email: string;
     token: string;
-    role: string; // Added role for navigation
+    role: string; 
   };
 }
 
@@ -37,8 +39,7 @@ export default function Login() {
   const mutation = useMutation<
     LoginResponse,
     Error,
-    { email: string; password: string }
-  >({
+    { email: string; password: string }>({
     mutationFn: async (data) => {
       const response = await axios.post<LoginResponse>(
         "http://127.0.0.1:3000/api/v1/auth/login",
@@ -47,14 +48,15 @@ export default function Login() {
       return response.data;
     },
     onSuccess: (data) => {
-      console.log("Login Response:", data); // Log API response
+      console.log("Login Response:", data); 
       if (!data.user || !data.user.role) {
         console.error("User or role is missing in API response:", data);
-        alert("Invalid login response. Please try again.");
+        toast.error("Invalid login response. Please try again."); 
         return;
       }
 
       login(data.user);
+      toast.success("Login successful!"); // Toast for successful login
 
       // Role-based navigation
       if (data.user.role === "Donor") {
@@ -66,8 +68,8 @@ export default function Login() {
       }
     },
 
-    onError: (error) => {
-      alert("Login failed: " + (error?.message || "Unknown error"));
+    onError: () => {
+      toast.error("Invalid email or password. Please try again."); 
     },
   });
 
@@ -85,13 +87,16 @@ export default function Login() {
       {/* Main Content */}
       <div className="flex flex-grow pt-16">
         {/* Left Section - SVG Illustration */}
-        <div className="hidden md:flex md:w-1/2 bg-gray-200 justify-center items-center">
+        <div className="hidden md:flex md:w-1/2 bg-gray-300 justify-center items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="524.67004"
             height="531.39694"
             className="w-full"
+            // alt="https://undraw.co/illustrations"
+            // title="https://undraw.co/illustrations"
             viewBox="0 0 524.67004 531.39694"
+            // xmlns:xlink="http://www.w3.org/1999/xlink"
           >
             <polygon
               points="117.67523 88.74385 113.67523 109.74385 133.61763 115.36589 131.1398 92.94604 117.67523 88.74385"
@@ -259,16 +264,61 @@ export default function Login() {
                   fill="#ffb6b6"
                 />
                 <polygon
-                  points="399.79492 400.61868 406.35291 426.59497 374.25586 477.97375 341.48965 510.90475 330.86948 502.09406 363.91479 460.97745 388."
-                  /* Continuing from where the code was cut off */
+                  points="399.79492 400.61868 406.35291 426.59497 374.25586 477.97375 341.48965 510.90475 330.86948 502.09406 363.91479 460.97745 388.96295 407.99997 399.79492 400.61868"
+                  fill="#e6e6e6"
                 />
               </g>
+              <path
+                d="M365.24362,357.68896c4.94998-.01184,5.23102,.02112,6.03156,0,6.1395-.1619,7.74496-2.57733,10.85684-2.41263,5.55417,.29398-1.77649,28.14084-4.82526,41.01468-2.99002,12.62589,7.11493,23.9397,7.84103,24.72943,10.25668,11.15479,28.27277,13.19449,31.36417,8.44421,2.50223-3.84491-6.36569-9.69107-4.22211-18.0947,2.09543-8.21484,11.77112-7.34009,14.47577-15.07892,2.83246-8.10455-6.68613-12.19214-12.66629-31.96732-3.43442-11.35699-2.82687-13.47311-6.03156-20.50732-8.56613-18.80209-50.55359-10.79666-45.83994,6.63474,.9118,3.37189-1.51474,7.24872,3.01578,7.23788v-.00006Z"
+                fill="#2f2e41"
+              />
+            </g>
+            <g>
+              <path
+                d="M426.8764,128.56088H224.02585c-5.7366,0-10.4035-4.66732-10.4035-10.4035V10.4035c0-5.73617,4.6669-10.4035,10.4035-10.4035h202.85056c5.7366,0,10.4035,4.66732,10.4035,10.4035V118.15739c0,5.73617-4.6669,10.4035-10.4035,10.4035Z"
+                fill="#fff"
+              />
+              <path
+                d="M426.8764,128.56088H224.02585c-5.7366,0-10.4035-4.66732-10.4035-10.4035V10.4035c0-5.73617,4.6669-10.4035,10.4035-10.4035h202.85056c5.7366,0,10.4035,4.66732,10.4035,10.4035V118.15739c0,5.73617-4.6669,10.4035-10.4035,10.4035ZM224.02585,1.73731c-4.77844,0-8.66618,3.88774-8.66618,8.66619V118.15739c0,4.77845,3.88774,8.66619,8.66618,8.66619h202.85056c4.77844,0,8.6662-3.88774,8.6662-8.66619V10.4035c0-4.77845-3.88773-8.66619-8.6662-8.66619H224.02585Z"
+                fill="#3f3d56"
+              />
+              <circle cx="411.22028" cy="10.42386" r="2.60596" fill="#3f3d56" />
+              <circle cx="418.16949" cy="10.42386" r="2.60596" fill="#3f3d56" />
+              <circle cx="425.11874" cy="10.42386" r="2.60596" fill="#3f3d56" />
+              <path
+                d="M228.38948,52.5536c-.71851,0-1.30298,.58448-1.30298,1.30298,0,.35035,.1353,.67439,.38087,.91361,.2477,.25364,.57217,.38937,.9221,.38937h194.99193c.71851,0,1.30298-.58448,1.30298-1.30298,0-.35035-.13531-.67439-.38089-.91361-.24771-.25364-.57217-.38937-.92209-.38937H228.38948Z"
+                fill="#e6e6e6"
+              />
+              <path
+                d="M399.05911,52.11928v3.47462H228.38948c-.47775,0-.91208-.19113-1.22478-.51253-.32146-.3127-.51253-.74703-.51253-1.22478,0-.95555,.78181-1.73731,1.7373-1.73731h170.66963Z"
+                fill="#000000"
+              />
+              <path
+                d="M421.20978,45.60437h-17.37308c-1.91589,0-3.47461-1.55832-3.47461-3.47462s1.55875-3.47462,3.47461-3.47462h17.37308c1.91589,0,3.47461,1.55832,3.47461,3.47462s-1.55875,3.47462-3.47461,3.47462Z"
+                fill="#e6e6e6"
+              />
+              <path
+                d="M307.41605,27.36262h-77.72357c-1.91588,0-3.47462-1.55832-3.47462-3.47462s1.55875-3.47462,3.47462-3.47462h77.72357c1.91589,0,3.47461,1.55832,3.47461,3.47462s-1.55875,3.47462-3.47461,3.47462Z"
+                fill="#e6e6e6"
+              />
+              <path
+                d="M228.38948,91.64306c-.71851,0-1.30298,.58448-1.30298,1.30298,0,.35035,.1353,.67439,.38087,.91361,.2477,.25364,.57217,.38937,.9221,.38937h194.99193c.71851,0,1.30298-.58448,1.30298-1.30298,0-.35035-.13531-.67439-.38089-.91361-.24771-.25364-.57217-.38937-.92209-.38937H228.38948Z"
+                fill="#e6e6e6"
+              />
+              <path
+                d="M332.1727,91.20873v3.47462h-103.78322c-.47775,0-.91208-.19113-1.22478-.51253-.32146-.3127-.51253-.74703-.51253-1.22478,0-.95555,.78181-1.73731,1.7373-1.73731h103.78322Z"
+                fill="#000000"
+              />
+              <path
+                d="M421.20978,84.69383h-17.37308c-1.91589,0-3.47461-1.55832-3.47461-3.47462s1.55875-3.47462,3.47461-3.47462h17.37308c1.91589,0,3.47461,1.55832,3.47461,3.47462s-1.55875,3.47462-3.47461,3.47462Z"
+                fill="#e6e6e6"
+              />
             </g>
           </svg>
         </div>
 
         {/* Right Section - Login Form */}
-        <div className="w-full md:w-1/2 flex items-center justify-center px-6 py-8">
+        <div className="w-full md:w-1/2 flex bg-white-100 items-center justify-center px-6 py-8">
           <div className="max-w-md w-full">
             <h2 className="text-3xl font-bold text-center mb-8">
               Welcome Back
@@ -353,8 +403,7 @@ export default function Login() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-                    >
+                      className="w-full bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800">
                       {isSubmitting ? "Logging in..." : "Log in"}
                     </button>
                   </div>
@@ -362,7 +411,7 @@ export default function Login() {
               )}
             </Formik>
 
-            <p className="mt-6 text-center text-sm text-gray-600">
+            <p className="mt-6 text-center text-sm text-gray-600 bg-gray-">
               Don't have an account?{" "}
               <Link
                 to="/SignUp"
