@@ -74,7 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
   
 
-  // ✅ Logout function (clears session)
+  // Logout function (clears session)
   const logout = useCallback(() => {
     setUser(null);
     localStorage.removeItem("user");
@@ -110,7 +110,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-// ✅ Custom hook to access auth context
+// Custom hook to access auth context
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {

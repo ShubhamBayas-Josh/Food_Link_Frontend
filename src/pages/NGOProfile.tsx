@@ -32,15 +32,30 @@ const fetchUserData = async (userId: string) => {
   return response.data;
 };
 
-const fetchAllClaims = async () => {
+// Modified to fetch claims by user ID
+const fetchUserClaims = async (userId: string) => {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("No token found");
 
+  // Option 1: If your API supports filtering by user_id as a query parameter
+  const response = await axios.get(`http://127.0.0.1:3000/api/v1/food_claims?user_id=${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  // If your API doesn't support filtering, we can filter the results here
+  // Uncomment this if you need to filter client-side instead
+  /*
   const response = await axios.get(`http://127.0.0.1:3000/api/v1/food_claims`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+  
+  // Filter claims to only show those belonging to the current user
+  return response.data.filter((claim) => claim.user_id === userId);
+  */
 
   return response.data;
 };
@@ -72,14 +87,15 @@ const NGOProfile = () => {
     enabled: Boolean(userId),
   });
 
-  const { data: claims, isLoading: claimsLoading, error: claimsError } = useQuery({
-    queryKey: ["claims"],
-    queryFn: fetchAllClaims,
-    enabled: Boolean(userId), // Only fetch when userId is available
+  // Modified to use the user-specific claims fetch function
+  const { data: userClaims, isLoading: claimsLoading, error: claimsError } = useQuery({
+    queryKey: ["userClaims", userId],
+    queryFn: () => fetchUserClaims(userId as string),
+    enabled: Boolean(userId),
   });
 
-  // We're now using all claims without filtering
-  console.log("All claims:", claims); // Debug log to check claims data
+  // Debug log to check user-specific claims
+  console.log("User claims:", userClaims);
 
   // Status badge color mapping - added null check
   const getStatusColor = (status: string | undefined) => {
@@ -198,7 +214,7 @@ const NGOProfile = () => {
                     : 'text-gray-500 hover:text-green-500'
                 }`}
               >
-                Claim History
+                My Claims
               </button>
             </div>
           </div>
@@ -263,15 +279,15 @@ const NGOProfile = () => {
         ) : (
           <div className="bg-white rounded-xl shadow-xl p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-gray-800">All Food Claims</h2>
+              <h2 className="text-xl font-semibold text-gray-800">My Food Claims</h2>
               <span className="bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full">
-                Total: {claims?.length || 0} claims
+                Total: {userClaims?.length || 0} claims
               </span>
             </div>
             
-            {claims && claims.length > 0 ? (
+            {userClaims && userClaims.length > 0 ? (
               <div className="space-y-4">
-                {claims.map((claim: Claim) => (
+                {userClaims.map((claim: Claim) => (
                   <div key={claim.id} className="border border-gray-200 rounded-lg overflow-hidden">
                     <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
                       <div className="flex items-center justify-between">
@@ -323,7 +339,7 @@ const NGOProfile = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 <h3 className="text-lg font-medium text-gray-800 mb-1">No claims found</h3>
-                <p className="text-gray-600">There are no food claims in the system yet. Check back later or browse available donations!</p>
+                <p className="text-gray-600">You haven't made any food claims yet. Browse available donations to make your first claim!</p>
               </div>
             )}
           </div>
@@ -335,7 +351,7 @@ const NGOProfile = () => {
     <div>
       <Footer/>
     </div>
-  </>
+    </>
   );
 };
 

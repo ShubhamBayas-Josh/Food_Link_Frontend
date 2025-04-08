@@ -11,8 +11,9 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../pages/AuthContext";
-import { toast } from "react-hot-toast"; // Assuming react-hot-toast is installed
+import { toast } from "react-hot-toast"; 
 import ProjectLogo from "../assets/ProjectLogo.png";
+
 
 export default function Navbar() {
   const { user, logout } = useAuth();

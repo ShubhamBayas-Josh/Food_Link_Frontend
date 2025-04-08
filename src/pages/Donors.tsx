@@ -9,7 +9,7 @@ import { jwtDecode } from "jwt-decode";
 import Navbar from "../shared/Navbar";
 import { motion } from "framer-motion";
 import Footer from "../shared/footer";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
 
 import {
   TrendingUp,
@@ -83,7 +83,7 @@ const validationSchema = Yup.object({
 const Donors: React.FC = () => {
   const [open, setOpen] = useState<boolean>(false);
   const queryClient = useQueryClient();
-  const userId = getUserIdFromToken(); 
+  const userId = getUserIdFromToken();
 
   const mutation = useMutation({
     mutationFn: async (newTransaction: any) => {
@@ -103,7 +103,6 @@ const Donors: React.FC = () => {
       return response.data;
     },
     onSuccess: () => {
-
       toast.success("Donation submitted successfully!");
 
       queryClient.invalidateQueries({ queryKey: ["food_transactions"] });
@@ -111,7 +110,8 @@ const Donors: React.FC = () => {
     },
     onError: (error: any) => {
       console.error("Submission error:", error.response?.data || error.message);
-      toast.error(`Failed to submit donation: ${
+      toast.error(
+        `Failed to submit donation: ${
           error.response?.data?.message || error.message
         }`
       );
@@ -165,8 +165,8 @@ const Donors: React.FC = () => {
       <Navbar />
 
       {isLoggedIn && role === "donor" ? (
-        <main className="flex-1 p-6" >
-
+        <main className="flex-1 p-6">
+          
           {/* Hero Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -194,8 +194,6 @@ const Donors: React.FC = () => {
               </motion.button>
             </div>
           </motion.div>
-
-        
 
           {/* How It Works Section */}
           <motion.section
@@ -280,108 +278,109 @@ const Donors: React.FC = () => {
             </div>
           </motion.section>
 
-                {/* Features Section */}
-      <motion.section
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={containerVariants}
-        className="bg-white rounded-xl shadow-lg p-8 w-full mb-8">
-        <div className="max-w-6xl mx-auto">
-          <motion.p
-            variants={itemVariants}
-            className="font-medium text-blue-500 text-center uppercase mb-2"
+          {/* Features Section */}
+          <motion.section
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={containerVariants}
+            className="bg-white rounded-xl shadow-lg p-8 w-full mb-8"
           >
-            Our Features
-          </motion.p>
-          <motion.h1
-            variants={itemVariants}
-            className="font-bold text-gray-900 text-3xl text-center mb-10"
-          >
-            We believe we can save more lives with you
-          </motion.h1>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div
-              variants={itemVariants}
-              whileHover={{ y: -5 }}
-              className="bg-gradient-to-b from-blue-50 to-white rounded-xl p-6 text-center shadow transition-all"
-            >
-              <div className="flex justify-center mb-6">
-                <div className="w-16 h-16 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full">
-                  <Globe size={24} />
-                </div>
-              </div>
-              <h4 className="font-semibold text-xl text-gray-900 mb-4">
-                Transparent
-              </h4>
-              <p className="text-gray-600 mb-6">
-                Donations and distributions can be seen transparently through
-                our real-time dashboard.
-              </p>
-              <motion.a
-                href="#"
-                whileHover={{ scale: 1.05 }}
-                className="inline-flex items-center gap-2 px-4 py-2 font-medium text-blue-600 rounded-lg hover:bg-blue-50"
+            <div className="max-w-6xl mx-auto">
+              <motion.p
+                variants={itemVariants}
+                className="font-medium text-blue-500 text-center uppercase mb-2"
               >
-                Learn more →
-              </motion.a>
-            </motion.div>
-
-            <motion.div
-              variants={itemVariants}
-              whileHover={{ y: -5 }}
-              className="bg-gradient-to-b from-blue-50 to-white rounded-xl p-6 text-center shadow transition-all"
-            >
-              <div className="flex justify-center mb-6">
-                <div className="w-16 h-16 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full">
-                  <TrendingUp size={24} />
-                </div>
-              </div>
-              <h4 className="font-semibold text-xl text-gray-900 mb-4">
-                Quick Fundraise
-              </h4>
-              <p className="text-gray-600 mb-6">
-                The simplest and quickest way to make a donation and see your
-                impact immediately.
-              </p>
-              <motion.a
-                href="#"
-                whileHover={{ scale: 1.05 }}
-                className="inline-flex items-center gap-2 px-4 py-2 font-medium text-blue-600 rounded-lg hover:bg-blue-50"
+                Our Features
+              </motion.p>
+              <motion.h1
+                variants={itemVariants}
+                className="font-bold text-gray-900 text-3xl text-center mb-10"
               >
-                Learn more →
-              </motion.a>
-            </motion.div>
+                We believe we can save more lives with you
+              </motion.h1>
 
-            <motion.div
-              variants={itemVariants}
-              whileHover={{ y: -5 }}
-              className="bg-gradient-to-b from-blue-50 to-white rounded-xl p-6 text-center shadow transition-all"
-            >
-              <div className="flex justify-center mb-6">
-                <div className="w-16 h-16 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full">
-                  <Clock size={24} />
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ y: -5 }}
+                  className="bg-gradient-to-b from-blue-50 to-white rounded-xl p-6 text-center shadow transition-all"
+                >
+                  <div className="flex justify-center mb-6">
+                    <div className="w-16 h-16 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full">
+                      <Globe size={24} />
+                    </div>
+                  </div>
+                  <h4 className="font-semibold text-xl text-gray-900 mb-4">
+                    Transparent
+                  </h4>
+                  <p className="text-gray-600 mb-6">
+                    Donations and distributions can be seen transparently
+                    through our real-time dashboard.
+                  </p>
+                  <motion.a
+                    href="#"
+                    whileHover={{ scale: 1.05 }}
+                    className="inline-flex items-center gap-2 px-4 py-2 font-medium text-blue-600 rounded-lg hover:bg-blue-50"
+                  >
+                    Learn more →
+                  </motion.a>
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ y: -5 }}
+                  className="bg-gradient-to-b from-blue-50 to-white rounded-xl p-6 text-center shadow transition-all"
+                >
+                  <div className="flex justify-center mb-6">
+                    <div className="w-16 h-16 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full">
+                      <TrendingUp size={24} />
+                    </div>
+                  </div>
+                  <h4 className="font-semibold text-xl text-gray-900 mb-4">
+                    Quick Fundraise
+                  </h4>
+                  <p className="text-gray-600 mb-6">
+                    The simplest and quickest way to make a donation and see
+                    your impact immediately.
+                  </p>
+                  <motion.a
+                    href="#"
+                    whileHover={{ scale: 1.05 }}
+                    className="inline-flex items-center gap-2 px-4 py-2 font-medium text-blue-600 rounded-lg hover:bg-blue-50"
+                  >
+                    Learn more →
+                  </motion.a>
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ y: -5 }}
+                  className="bg-gradient-to-b from-blue-50 to-white rounded-xl p-6 text-center shadow transition-all"
+                >
+                  <div className="flex justify-center mb-6">
+                    <div className="w-16 h-16 flex items-center justify-center bg-blue-100 text-blue-600 rounded-full">
+                      <Clock size={24} />
+                    </div>
+                  </div>
+                  <h4 className="font-semibold text-xl text-gray-900 mb-4">
+                    Real Time
+                  </h4>
+                  <p className="text-gray-600 mb-6">
+                    Reports related to donations and distribution are updated in
+                    real-time for full transparency.
+                  </p>
+                  <motion.a
+                    href="#"
+                    whileHover={{ scale: 1.05 }}
+                    className="inline-flex items-center gap-2 px-4 py-2 font-medium text-blue-600 rounded-lg hover:bg-blue-50"
+                  >
+                    Learn more →
+                  </motion.a>
+                </motion.div>
               </div>
-              <h4 className="font-semibold text-xl text-gray-900 mb-4">
-                Real Time
-              </h4>
-              <p className="text-gray-600 mb-6">
-                Reports related to donations and distribution are updated in
-                real-time for full transparency.
-              </p>
-              <motion.a
-                href="#"
-                whileHover={{ scale: 1.05 }}
-                className="inline-flex items-center gap-2 px-4 py-2 font-medium text-blue-600 rounded-lg hover:bg-blue-50"
-              >
-                Learn more →
-              </motion.a>
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
+            </div>
+          </motion.section>
 
           {/* Statistics */}
           <motion.section
@@ -406,9 +405,8 @@ const Donors: React.FC = () => {
           </motion.section>
 
           <div>
-            <Footer/>
+            <Footer />
           </div>
-
 
           {/* Donation Modal */}
           {open && (
